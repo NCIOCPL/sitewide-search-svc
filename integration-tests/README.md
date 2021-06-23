@@ -4,6 +4,9 @@
 3. Clone this repository
 4. `cd <REPO_ROOT>/integration-tests`
 5. `docker compose --project-directory docker-sws-api up --force-recreate`
+6. Open a second command prompt
+7. `cd <REPO_ROOT>/integration-tests`
+8. `bin/load-integration-data.sh`
 
 ## Notes
 * We use docker for dev testing because ES will no longer run on higher Java versions, so this is the easiest way to get it up and running.
@@ -12,8 +15,7 @@
 * In order to get the API rebuilt after changes to the code, you must run
   * `cd <REPO_ROOT>/integration-tests`
   * `docker compose --project-directory docker-sws-api down --rmi local`
-  * `docker compose --project-directory docker-sws-api build`
-  * `docker compose --project-directory docker-sws-api up`
+  * `docker compose --project-directory docker-sws-api up --force-recreate`
   * Open a second command prompt
   * `cd <REPO_ROOT>/integration-tests`
   * `bin/load-integration-data.sh`
