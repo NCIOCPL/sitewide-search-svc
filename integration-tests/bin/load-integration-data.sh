@@ -39,25 +39,25 @@ echo "ES status is green"
 
 pushd $DIR/../data/source
 echo "Load the index mappings"
-MAPPING_LOAD_CMD="curl -fsS -H \"Content-Type: application/x-ndjson\" -XPUT ${ELASTIC_HOST}/cgov --data-binary \"@cgov-mapping.json\""
+MAPPING_LOAD_CMD="curl -H \"Content-Type: application/x-ndjson\" --connect-timeout 5 --verbose -XPUT ${ELASTIC_HOST}/autosg --data-binary \"@autosg-mapping.json\""
 mapping_output=$(eval $MAPPING_LOAD_CMD)
 echo $mapping_output
 
-MAPPING_LOAD_CMD="curl -fsS -H \"Content-Type: application/x-ndjson\" -XPUT ${ELASTIC_HOST}/autosg --data-binary \"@autosg-mapping.json\""
+MAPPING_LOAD_CMD="curl -H \"Content-Type: application/x-ndjson\" --connect-timeout 5 --verbose -XPUT ${ELASTIC_HOST}/cgov --data-binary \"@cgov-mapping.json\""
 mapping_output=$(eval $MAPPING_LOAD_CMD)
 echo $mapping_output
 
 
 # Combining the cgov-data files causes the bulk load to fail.
 echo "Load the records"
-BULK_LOAD_CMD="curl -fsS -H \"Content-Type: application/x-ndjson\" -XPOST ${ELASTIC_HOST}/_bulk --data-binary \"@cgov-data-1.jsonl\""
+BULK_LOAD_CMD="curl -H \"Content-Type: application/x-ndjson\" -XPOST ${ELASTIC_HOST}/_bulk --verbose --data-binary \"@cgov-data-1.jsonl\""
 load_output=$(eval $BULK_LOAD_CMD)
 
 ## Test to make sure we loaded items
 ## TODO: Actually check for errors.
 echo $load_output | wc -l
 
-BULK_LOAD_CMD="curl -fsS -H \"Content-Type: application/x-ndjson\" -XPOST ${ELASTIC_HOST}/_bulk --data-binary \"@cgov-data-2.jsonl\""
+BULK_LOAD_CMD="curl -H \"Content-Type: application/x-ndjson\" -XPOST ${ELASTIC_HOST}/_bulk --verbose --data-binary \"@cgov-data-2.jsonl\""
 load_output=$(eval $BULK_LOAD_CMD)
 
 ## Test to make sure we loaded items
